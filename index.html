@@ -46,7 +46,7 @@
             outline: none;
         }
 
-        /* NAGŁÓWKI MOBILE */
+        /* NAGŁÓWKI MOBILE (CAPS LOCK, WAGA 700) */
         .brand-btn { 
             top: 32px; font-weight: 700; font-size: 15px; 
             letter-spacing: 0.2em; text-transform: uppercase;
@@ -54,7 +54,7 @@
         .brand-ccru { left: 32px; }
         .brand-czasowniki { right: 32px; text-align: right; }
 
-        /* OPISY */
+        /* OPISY (LEKKI FONT 200, WIĘKSZY) */
         .info-panel {
             position: absolute; top: 65px; 
             color: var(--ui-white); mix-blend-mode: difference;
@@ -86,14 +86,22 @@
         .btn-action { left: 63%; transform: translateX(-50%); }
         .btn-reset { right: 32px; }
 
-        /* DESKTOP */
+        /* OPTYMALIZACJA PC / DESKTOP */
         @media (min-width: 769px) {
-            .brand-btn { font-size: 19px; top: 40px; font-weight: 500; letter-spacing: 0.25em; }
+            .brand-btn { 
+                font-size: 19px; 
+                top: 40px; 
+                font-weight: 500; 
+                letter-spacing: 0.25em;
+            }
             .info-panel { font-size: 16px; top: 85px; }
             #panel-czasowniki { max-width: 500px; }
             .icon-btn { width: 32px; height: 32px; }
             .icon-btn svg { width: 24px; height: 24px; }
-            #ar-label { font-size: 20px; font-weight: 500; }
+            #ar-label { 
+                font-size: 20px; 
+                font-weight: 500; 
+            }
         }
     </style>
 </head>
@@ -106,10 +114,4 @@
 
     <button class="ui-element brand-btn brand-czasowniki" id="toggle-czasowniki">CZASOWNIKI</button>
     <div id="panel-czasowniki" class="info-panel">
-        Obiekty kinetyczne badające granicę<br>
-        między precyzyjną inżynierią,<br>
-        a wizualnym absurdem.
-    </div>
-
-    <button class="ui-element icon-btn btn-theme" id="theme-toggle">
-        <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18V4c4.42 0 8 3.58 8 8s-3.58
+        Ob
