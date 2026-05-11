@@ -30,7 +30,6 @@
             outline: none; display: block;
         }
 
-        /* UKRYCIE DOMYŚLNEJ IKONY AR NA ANDROIDZIE */
         model-viewer::part(default-ar-button) {
             display: none !important;
         }
@@ -46,7 +45,6 @@
             outline: none;
         }
 
-        /* NAGŁÓWKI MOBILE (CAPS LOCK, WAGA 700) */
         .brand-btn { 
             top: 32px; font-weight: 700; font-size: 15px; 
             letter-spacing: 0.2em; text-transform: uppercase;
@@ -54,7 +52,6 @@
         .brand-ccru { left: 32px; }
         .brand-czasowniki { right: 32px; text-align: right; }
 
-        /* OPISY (LEKKI FONT 200, WIĘKSZY) */
         .info-panel {
             position: absolute; top: 65px; 
             color: var(--ui-white); mix-blend-mode: difference;
@@ -71,7 +68,6 @@
         #panel-ccru { left: 32px; }
         #panel-czasowniki { right: 32px; text-align: right; max-width: 320px; }
 
-        /* IKONY DOLNE */
         .icon-btn { width: 28px; height: 28px; bottom: 40px; display: flex; align-items: center; justify-content: center; }
         .icon-btn svg { width: 20px; height: 20px; }
         
@@ -86,22 +82,13 @@
         .btn-action { left: 63%; transform: translateX(-50%); }
         .btn-reset { right: 32px; }
 
-        /* OPTYMALIZACJA PC / DESKTOP */
         @media (min-width: 769px) {
-            .brand-btn { 
-                font-size: 19px; 
-                top: 40px; 
-                font-weight: 500; 
-                letter-spacing: 0.25em;
-            }
+            .brand-btn { font-size: 19px; top: 40px; font-weight: 500; letter-spacing: 0.25em; }
             .info-panel { font-size: 16px; top: 85px; }
             #panel-czasowniki { max-width: 500px; }
             .icon-btn { width: 32px; height: 32px; }
             .icon-btn svg { width: 24px; height: 24px; }
-            #ar-label { 
-                font-size: 20px; 
-                font-weight: 500; 
-            }
+            #ar-label { font-size: 20px; font-weight: 500; }
         }
     </style>
 </head>
@@ -160,6 +147,7 @@
 
         const mv = document.querySelector('#clock-model');
 
+        // Reset widoku
         document.querySelector('#reset-view').onclick = () => {
             const isMob = window.innerWidth < 768;
             mv.cameraOrbit = isMob ? CONFIG.mobileOrbit : CONFIG.desktopOrbit;
@@ -167,12 +155,15 @@
             mv.fieldOfView = "auto";
         };
 
+        // Panele (poprawione ID panel-ccru)
         const togglePanel = (id) => {
             const p = document.getElementById(id);
             const other = id === 'panel-ccru' ? 'panel-czasowniki' : 'panel-ccru';
-            document.getElementById(other).classList.remove('visible');
-            p.classList.toggle('visible');
+            const otherEl = document.getElementById(other);
+            if (otherEl) otherEl.classList.remove('visible');
+            if (p) p.classList.toggle('visible');
         };
+
         document.getElementById('toggle-ccru').onclick = () => togglePanel('panel-ccru');
         document.getElementById('toggle-czasowniki').onclick = () => togglePanel('panel-czasowniki');
 
