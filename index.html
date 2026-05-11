@@ -68,7 +68,7 @@
         shadow-intensity="1" shadow-softness="1"
         exposure="1.6" environment-intensity="1.8"
         autoplay animation-name="auto"
-        auto-rotate
+        auto-rotate rotation-per-second="2deg"
         camera-orbit="0deg 55deg 180%" camera-target="0m 0.04m 0m"
         min-camera-orbit="auto auto 100%" max-camera-orbit="auto auto 600%"
         loading="eager" interaction-prompt="none">
@@ -79,9 +79,70 @@
             mobileOrbit: "0deg 55deg 165%",
             desktopOrbit: "0deg 55deg 180%",
             mobileTarget: "0m 0.06m 0m",
-            desktopTarget: "0m 0.04m 0m",
-            targetSpeed: 2.5,
-            accelStep: 0.02
+            desktopTarget: "0m 0.04m 0m"
         };
 
-        const mv = document.querySelector('#clock-model
+        const mv = document.querySelector('#clock-model');
+
+        // Reset widoku
+        document.querySelector('#reset-view').onclick = () => {
+            const isMob = window.innerWidth < 768;
+            mv.cameraOrbit = isMob ? CONFIG.mobileOrbit : CONFIG.desktopOrbit;
+            mv.cameraTarget = isMob ? CONFIG.mobileTarget : CONFIG.desktopTarget;
+            mv.fieldOfView = "auto";
+        };
+
+        // Panele info
+        const togglePanel = (id) => {
+            const p = document.getElementById(id);
+            const other = id === 'panel-ccru' ? 'panel-czasowniki' : 'panel-ccru';
+            document.getElementById(other).classList.remove('visible');
+            p.classList.toggle('visible');
+        };
+        document.getElementById('toggle-ccru').onclick = () => togglePanel('panel-ccru');
+        document.getElementById('toggle-czasowniki').onclick = () => togglePanel('panel-czasowniki');
+
+        // Theme
+        document.getElementById('theme-toggle').onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            mv.exposure = isDark ? "1.6" : "2.8";
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#121212' : '#ffffff');
+        };
+
+        // Pause/Play (Zegar również staje przy pauzie)
+        const pauseBtn = document.getElementById('pause-toggle');
+        pauseBtn.onclick = () => {
+            const isP = pauseBtn.dataset.paused === "true";
+            if (!isP) {
+                mv.pause();
+                mv.autoRotate = false;
+                document.getElementById('icon-pause').style.display = 'none';
+                document.getElementById('icon-play').style.display = 'block';
+                pauseBtn.dataset.paused = "true";
+            } else {
+                mv.play();
+                mv.autoRotate = true;
+                document.getElementById('icon-pause').style.display = 'block';
+                document.getElementById('icon-play').style.display = 'none';
+                pauseBtn.dataset.paused = "false";
+            }
+        };
+
+        // ZMIANA: PRZYWRÓCONA OBSŁUGA AR/FULLSCREEN W ZALEŻNOŚCI OD URZĄDZENIA
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        const actionBtn = document.getElementById('action-toggle');
+        
+        if (isMobile) {
+            document.getElementById('ar-label').style.display = 'flex';
+            actionBtn.onclick = () => mv.activateAR();
+        } else {
+            document.getElementById('fs-icon').style.display = 'block';
+            actionBtn.onclick = () => {
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+                else document.exitFullscreen();
+            };
+        }
+    </script>
+</body>
+</html>
