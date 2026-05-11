@@ -30,6 +30,7 @@
             outline: none; display: block;
         }
 
+        /* UKRYCIE DOMYŚLNEJ IKONY AR NA ANDROIDZIE */
         model-viewer::part(default-ar-button) {
             display: none !important;
         }
@@ -45,6 +46,7 @@
             outline: none;
         }
 
+        /* NAGŁÓWKI MOBILE (CAPS LOCK, WAGA 700) */
         .brand-btn { 
             top: 32px; font-weight: 700; font-size: 15px; 
             letter-spacing: 0.2em; text-transform: uppercase;
@@ -52,6 +54,7 @@
         .brand-ccru { left: 32px; }
         .brand-czasowniki { right: 32px; text-align: right; }
 
+        /* OPISY (LEKKI FONT 200, WIĘKSZY) */
         .info-panel {
             position: absolute; top: 65px; 
             color: var(--ui-white); mix-blend-mode: difference;
@@ -68,6 +71,7 @@
         #panel-ccru { left: 32px; }
         #panel-czasowniki { right: 32px; text-align: right; max-width: 320px; }
 
+        /* IKONY DOLNE */
         .icon-btn { width: 28px; height: 28px; bottom: 40px; display: flex; align-items: center; justify-content: center; }
         .icon-btn svg { width: 20px; height: 20px; }
         
@@ -82,9 +86,136 @@
         .btn-action { left: 63%; transform: translateX(-50%); }
         .btn-reset { right: 32px; }
 
+        /* OPTYMALIZACJA PC / DESKTOP */
         @media (min-width: 769px) {
-            .brand-btn { font-size: 19px; top: 40px; font-weight: 500; letter-spacing: 0.25em; }
+            .brand-btn { 
+                font-size: 19px; 
+                top: 40px; 
+                font-weight: 500; 
+                letter-spacing: 0.25em;
+            }
             .info-panel { font-size: 16px; top: 85px; }
             #panel-czasowniki { max-width: 500px; }
             .icon-btn { width: 32px; height: 32px; }
-            .icon-btn svg { width: 24px; height:
+            .icon-btn svg { width: 24px; height: 24px; }
+            #ar-label { 
+                font-size: 20px; 
+                font-weight: 500; 
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="ui-element brand-btn brand-ccru" id="toggle-ccru">CCRU</button>
+    <div id="panel-ccru" class="info-panel">
+        Mechanizm kwarcowy<br>120x100x100 mm<br>Druk 3D PLA
+    </div>
+
+    <button class="ui-element brand-btn brand-czasowniki" id="toggle-czasowniki">CZASOWNIKI</button>
+    <div id="panel-czasowniki" class="info-panel">
+        Obiekty kinetyczne badające granicę<br>
+        między precyzyjną inżynierią,<br>
+        a wizualnym absurdem.
+    </div>
+
+    <button class="ui-element icon-btn btn-theme" id="theme-toggle">
+        <svg viewBox="0 0 24 24"><path d="M12 2C6.47 2 2 6.47 2 12s4.47 10 10 10 10-4.47 10-10S17.53 2 12 2zm0 18V4c4.42 0 8 3.58 8 8s-3.58 8-8 8z"/></svg>
+    </button>
+
+    <button class="ui-element icon-btn btn-pause" id="pause-toggle">
+        <svg id="icon-pause" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        <svg id="icon-play" viewBox="0 0 24 24" style="display:none;"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+
+    <button class="ui-element icon-btn btn-action" id="action-toggle">
+        <span id="ar-label" style="display:none;">AR</span>
+        <svg id="fs-icon" viewBox="0 0 24 24" style="display:none;"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+    </button>
+
+    <button class="ui-element icon-btn btn-reset" id="reset-view">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+    </button>
+
+    <model-viewer 
+        id="clock-model"
+        src="CCRU.glb" 
+        ar ar-modes="webxr scene-viewer quick-look" 
+        camera-controls disable-pan
+        shadow-intensity="1" shadow-softness="1"
+        exposure="1.6" environment-intensity="1.8"
+        autoplay animation-name="auto"
+        camera-orbit="0deg 55deg 180%" camera-target="0m 0.04m 0m"
+        min-camera-orbit="auto auto 100%" max-camera-orbit="auto auto 600%"
+        loading="eager" interaction-prompt="none">
+    </model-viewer>
+
+    <script>
+        const CONFIG = {
+            mobileOrbit: "0deg 55deg 165%",
+            desktopOrbit: "0deg 55deg 180%",
+            mobileTarget: "0m 0.06m 0m",
+            desktopTarget: "0m 0.04m 0m",
+            rotationSpeed: 0 // Wyłączone samoczynne kręcenie na starcie
+        };
+
+        const mv = document.querySelector('#clock-model');
+
+        // Reset widoku
+        document.querySelector('#reset-view').onclick = () => {
+            const isMob = window.innerWidth < 768;
+            mv.cameraOrbit = isMob ? CONFIG.mobileOrbit : CONFIG.desktopOrbit;
+            mv.cameraTarget = isMob ? CONFIG.mobileTarget : CONFIG.desktopTarget;
+            mv.fieldOfView = "auto";
+        };
+
+        // Obsługa paneli informacyjnych
+        const togglePanel = (id) => {
+            const p = document.getElementById(id);
+            const other = id === 'panel-ccru' ? 'panel-czasowniki' : 'panel-ccru';
+            document.getElementById(other).classList.remove('visible');
+            p.classList.toggle('visible');
+        };
+        document.getElementById('toggle-ccru').onclick = () => togglePanel('panel-ccru');
+        document.getElementById('toggle-czasowniki').onclick = () => togglePanel('panel-czasowniki');
+
+        // Zmiana motywu
+        document.getElementById('theme-toggle').onclick = () => {
+            document.body.classList.toggle('dark-mode');
+            const isDark = document.body.classList.contains('dark-mode');
+            mv.exposure = isDark ? "1.6" : "2.8";
+            document.querySelector('meta[name="theme-color"]').setAttribute('content', isDark ? '#121212' : '#ffffff');
+        };
+
+        // Pauza/Play animacji
+        const pauseBtn = document.getElementById('pause-toggle');
+        pauseBtn.onclick = () => {
+            const isP = pauseBtn.dataset.paused === "true";
+            if (!isP) {
+                mv.pause();
+                document.getElementById('icon-pause').style.display = 'none';
+                document.getElementById('icon-play').style.display = 'block';
+                pauseBtn.dataset.paused = "true";
+            } else {
+                mv.play();
+                document.getElementById('icon-pause').style.display = 'block';
+                document.getElementById('icon-play').style.display = 'none';
+                pauseBtn.dataset.paused = "false";
+            }
+        };
+
+        // AR i Fullscreen
+        const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+        if (isMobile) {
+            document.getElementById('ar-label').style.display = 'flex';
+            document.getElementById('action-toggle').onclick = () => mv.activateAR();
+        } else {
+            document.getElementById('fs-icon').style.display = 'block';
+            document.getElementById('action-toggle').onclick = () => {
+                if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+                else document.exitFullscreen();
+            };
+        }
+    </script>
+</body>
+</html>
