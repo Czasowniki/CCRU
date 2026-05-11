@@ -30,7 +30,6 @@
             outline: none; display: block;
         }
 
-        /* UKRYCIE DOMYŚLNEJ IKONY AR NA ANDROIDZIE */
         model-viewer::part(default-ar-button) {
             display: none !important;
         }
@@ -46,7 +45,6 @@
             outline: none;
         }
 
-        /* NAGŁÓWKI MOBILE (CAPS LOCK, WAGA 700) */
         .brand-btn { 
             top: 32px; font-weight: 700; font-size: 15px; 
             letter-spacing: 0.2em; text-transform: uppercase;
@@ -54,7 +52,6 @@
         .brand-ccru { left: 32px; }
         .brand-czasowniki { right: 32px; text-align: right; }
 
-        /* OPISY (LEKKI FONT 200, WIĘKSZY) */
         .info-panel {
             position: absolute; top: 65px; 
             color: var(--ui-white); mix-blend-mode: difference;
@@ -71,7 +68,6 @@
         #panel-ccru { left: 32px; }
         #panel-czasowniki { right: 32px; text-align: right; max-width: 320px; }
 
-        /* IKONY DOLNE */
         .icon-btn { width: 28px; height: 28px; bottom: 40px; display: flex; align-items: center; justify-content: center; }
         .icon-btn svg { width: 20px; height: 20px; }
         
@@ -86,22 +82,13 @@
         .btn-action { left: 63%; transform: translateX(-50%); }
         .btn-reset { right: 32px; }
 
-        /* OPTYMALIZACJA PC / DESKTOP */
         @media (min-width: 769px) {
-            .brand-btn { 
-                font-size: 19px; 
-                top: 40px; 
-                font-weight: 500; 
-                letter-spacing: 0.25em;
-            }
+            .brand-btn { font-size: 19px; top: 40px; font-weight: 500; letter-spacing: 0.25em; }
             .info-panel { font-size: 16px; top: 85px; }
             #panel-czasowniki { max-width: 500px; }
             .icon-btn { width: 32px; height: 32px; }
             .icon-btn svg { width: 24px; height: 24px; }
-            #ar-label { 
-                font-size: 20px; 
-                font-weight: 500; 
-            }
+            #ar-label { font-size: 20px; font-weight: 500; }
         }
     </style>
 </head>
@@ -109,9 +96,4 @@
 
     <button class="ui-element brand-btn brand-ccru" id="toggle-ccru">CCRU</button>
     <div id="panel-ccru" class="info-panel">
-        Mechanizm kwarcowy<br>120x100x100 mm<br>Druk 3D PLA
-    </div>
-
-    <button class="ui-element brand-btn brand-czasowniki" id="toggle-czasowniki">CZASOWNIKI</button>
-    <div id="panel-czasowniki" class="info-panel">
-        Ob
+        Mechanizm kwarcowy<br>120x100
